@@ -51,24 +51,3 @@ class ThreadPool():
         with self.lock:
             self.active.remove(name)
             self.log.debug('Remaining: %s', self.active)
-
-######################################################
-#                        TEST                        #
-######################################################
-def f(s, pool):
-    pool.log.debug('Waiting to join the pool')
-    with s:
-        name = threading.currentThread().getName()
-        pool.makeActive(name)
-        time.sleep(0.5)
-        pool.makeInactive(name)
-
-def main():
-    pool = ThreadPool()
-    s = threading.Semaphore(3)
-    for i in range(20):
-        t = threading.Thread(target=f, name='thread_'+str(i), args=(s, pool))
-        t.start()
-
-if __name__ == '__main__':
-    main()

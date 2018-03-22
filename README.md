@@ -1,1 +1,83 @@
-threadpool
+Example Use:
+
+from threadpool import Threadpool
+
+def func(s, pool):
+    pool.log.debug('Waiting to join the pool')
+    with s:
+        name = threading.currentThread().getName()
+        pool.makeActive(name)
+        time.sleep(0.5)
+        pool.makeInactive(name)
+
+def main():
+    pool = ThreadPool()
+    s = threading.Semaphore(5)
+    for i in range(20):
+        t = threading.Thread(target=func, name='thread_'+str(i), args=(s, pool))
+        t.start()
+
+if __name__ == '__main__':
+    main()
+
+Example Output:
+[thread_0] DEBUG: Waiting to join the pool
+[thread_1] DEBUG: Waiting to join the pool
+[thread_0] DEBUG: Running: ['thread_0']
+[thread_2] DEBUG: Waiting to join the pool
+[thread_3] DEBUG: Waiting to join the pool
+[thread_4] DEBUG: Waiting to join the pool
+[thread_5] DEBUG: Waiting to join the pool
+[thread_1] DEBUG: Running: ['thread_0', 'thread_1']
+[thread_6] DEBUG: Waiting to join the pool
+[thread_7] DEBUG: Waiting to join the pool
+[thread_8] DEBUG: Waiting to join the pool
+[thread_9] DEBUG: Waiting to join the pool
+[thread_10] DEBUG: Waiting to join the pool
+[thread_11] DEBUG: Waiting to join the pool
+[thread_12] DEBUG: Waiting to join the pool
+[thread_13] DEBUG: Waiting to join the pool
+[thread_14] DEBUG: Waiting to join the pool
+[thread_2] DEBUG: Running: ['thread_0', 'thread_1', 'thread_2']
+[thread_15] DEBUG: Waiting to join the pool
+[thread_16] DEBUG: Waiting to join the pool
+[thread_17] DEBUG: Waiting to join the pool
+[thread_18] DEBUG: Waiting to join the pool
+[thread_19] DEBUG: Waiting to join the pool
+[thread_3] DEBUG: Running: ['thread_0', 'thread_1', 'thread_2', 'thread_3']
+[thread_4] DEBUG: Running: ['thread_0', 'thread_1', 'thread_2', 'thread_3', 'thread_4']
+[thread_0] DEBUG: Remaining: ['thread_1', 'thread_2', 'thread_3', 'thread_4']
+[thread_5] DEBUG: Running: ['thread_1', 'thread_2', 'thread_3', 'thread_4', 'thread_5']
+[thread_1] DEBUG: Remaining: ['thread_2', 'thread_3', 'thread_4', 'thread_5']
+[thread_6] DEBUG: Running: ['thread_2', 'thread_3', 'thread_4', 'thread_5', 'thread_6']
+[thread_2] DEBUG: Remaining: ['thread_3', 'thread_4', 'thread_5', 'thread_6']
+[thread_7] DEBUG: Running: ['thread_3', 'thread_4', 'thread_5', 'thread_6', 'thread_7']
+[thread_3] DEBUG: Remaining: ['thread_4', 'thread_5', 'thread_6', 'thread_7']
+[thread_4] DEBUG: Remaining: ['thread_5', 'thread_6', 'thread_7']
+[thread_8] DEBUG: Running: ['thread_5', 'thread_6', 'thread_7', 'thread_8']
+[thread_9] DEBUG: Running: ['thread_5', 'thread_6', 'thread_7', 'thread_8', 'thread_9']
+[thread_5] DEBUG: Remaining: ['thread_6', 'thread_7', 'thread_8', 'thread_9']
+[thread_10] DEBUG: Running: ['thread_6', 'thread_7', 'thread_8', 'thread_9', 'thread_10']
+[thread_6] DEBUG: Remaining: ['thread_7', 'thread_8', 'thread_9', 'thread_10']
+[thread_11] DEBUG: Running: ['thread_7', 'thread_8', 'thread_9', 'thread_10', 'thread_11']
+[thread_7] DEBUG: Remaining: ['thread_8', 'thread_9', 'thread_10', 'thread_11']
+[thread_12] DEBUG: Running: ['thread_8', 'thread_9', 'thread_10', 'thread_11', 'thread_12']
+[thread_8] DEBUG: Remaining: ['thread_9', 'thread_10', 'thread_11', 'thread_12']
+[thread_9] DEBUG: Remaining: ['thread_10', 'thread_11', 'thread_12']
+[thread_13] DEBUG: Running: ['thread_10', 'thread_11', 'thread_12', 'thread_13']
+[thread_14] DEBUG: Running: ['thread_10', 'thread_11', 'thread_12', 'thread_13', 'thread_14']
+[thread_10] DEBUG: Remaining: ['thread_11', 'thread_12', 'thread_13', 'thread_14']
+[thread_15] DEBUG: Running: ['thread_11', 'thread_12', 'thread_13', 'thread_14', 'thread_15']
+[thread_11] DEBUG: Remaining: ['thread_12', 'thread_13', 'thread_14', 'thread_15']
+[thread_16] DEBUG: Running: ['thread_12', 'thread_13', 'thread_14', 'thread_15', 'thread_16']
+[thread_12] DEBUG: Remaining: ['thread_13', 'thread_14', 'thread_15', 'thread_16']
+[thread_17] DEBUG: Running: ['thread_13', 'thread_14', 'thread_15', 'thread_16', 'thread_17']
+[thread_13] DEBUG: Remaining: ['thread_14', 'thread_15', 'thread_16', 'thread_17']
+[thread_14] DEBUG: Remaining: ['thread_15', 'thread_16', 'thread_17']
+[thread_18] DEBUG: Running: ['thread_15', 'thread_16', 'thread_17', 'thread_18']
+[thread_19] DEBUG: Running: ['thread_15', 'thread_16', 'thread_17', 'thread_18', 'thread_19']
+[thread_15] DEBUG: Remaining: ['thread_16', 'thread_17', 'thread_18', 'thread_19']
+[thread_16] DEBUG: Remaining: ['thread_17', 'thread_18', 'thread_19']
+[thread_17] DEBUG: Remaining: ['thread_18', 'thread_19']
+[thread_18] DEBUG: Remaining: ['thread_19']
+[thread_19] DEBUG: Remaining: []
